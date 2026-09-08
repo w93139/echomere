@@ -25,12 +25,14 @@ SOFTWARE.
 
 The frontend uses the following fonts through next/font/google:
 
-- Cormorant Garamond, Copyright 2015 The Cormorant Project Authors
-- Noto Sans SC, Copyright 2014-2025 Adobe and Google LLC
-- Noto Serif SC, Copyright 2017-2025 Adobe and Google LLC
+- Cormorant Garamond: Copyright 2015 the Cormorant Project Authors
+  (github.com/CatharsisFonts/Cormorant)
+- Noto Sans SC: Copyright 2014-2021 Adobe (http://www.adobe.com/), with
+  Reserved Font Name 'Source'
+- Noto Serif SC: Copyright 2012 Google Inc. All Rights Reserved.
 
-These fonts are licensed under the SIL Open Font License, Version 1.1:
-https://openfontlicense.org/open-font-license-official-text/
+These fonts are licensed under the SIL Open Font License, Version 1.1. A copy
+is provided at frontend/licenses/fonts/OFL-1.1.txt.
 
 The procedural backdrop, CSS EchoMere mark, and generated Open Graph image are
 original project code distributed under the repository's Apache-2.0 license.
