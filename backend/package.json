@@ -1,0 +1,49 @@
+{
+  "name": "echomere-backend",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=20.9"
+  },
+  "type": "module",
+  "scripts": {
+    "postinstall": "prisma generate",
+    "predev": "npm run db:setup",
+    "dev": "tsx watch src/index.ts",
+    "prebuild": "npm run prisma:generate",
+    "build": "tsc",
+    "prestart": "npm run db:migrate",
+    "start": "node dist/index.js",
+    "prisma:generate": "prisma generate",
+    "db:migrate": "node scripts/ensure-sqlite-file.mjs && prisma migrate deploy",
+    "db:setup": "npm run prisma:generate && npm run db:migrate",
+    "check": "npm run build && npm test",
+    "test": "tsx --test src/lib/*.test.ts"
+  },
+  "dependencies": {
+    "@prisma/adapter-libsql": "^7.9.1",
+    "@prisma/client": "^7.9.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "lunar-javascript": "^1.7.7",
+    "taibu-core": "^3.5.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^20.19.43",
+    "prisma": "^7.9.1",
+    "tsx": "^4.23.12",
+    "typescript": "^5"
+  },
+  "overrides": {
+    "deepmerge-ts": "^8.0.2",
+    "mysql2": "^3.24.3"
+  }
+}

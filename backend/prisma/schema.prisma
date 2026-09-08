@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id                   String          @id @default(cuid())
+  email                String?         @unique
+  name                 String?
+  phone                String?         @unique
+  locale               String          @default("zh")
+  defaultDestinySystem String          @default("bazi")
+  currentPlan          String          @default("free")
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  profiles             Profile[]
+  conversations        Conversation[]
+  messages             Message[]
+  feedbacks            Feedback[]
+  billingRecords       BillingRecord[]
+  reports              Report[]
+}
+
+model Profile {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type          String   @default("self")
+  name          String?
+  gender        String
+  birthDateTime DateTime
+  birthLocation String?
+  timezone      String?
+  calendarType  String   @default("solar")
+  isLeapMonth   Boolean  @default(false)
+  longitude     Float?
+  relationship  String?
+  industry      String?
+  job           String?
+  knowledge     String?
+  isPrimary     Boolean  @default(false)
+  baziPillar    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  report        Report?
+
+  @@index([userId])
+}
+
+model Conversation {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mode          String
+  originalMode  String?
+  title         String?
+  status        String    @default("active")
+  messageCount  Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  messages      Message[]
+
+  @@index([userId, updatedAt])
+}
+
+model Report {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profileId   String   @unique
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  title       String?
+  summary     String?
+  content     String?
+  status      String   @default("pending")
+  errorMsg    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId, createdAt])
+  @@index([profileId])
+}
+
+model Message {
+  id              String       @id @default(cuid())
+  conversationId  String
+  conversation    Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  userId          String?
+  user            User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  role            String
+  content         String
+  toolCalls       String?
+  thinkingSummary String?
+  createdAt       DateTime     @default(now())
+
+  @@index([conversationId, createdAt])
+}
+
+model Feedback {
+  id        String   @id @default(cuid())
+  messageId String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reaction  String
+  comment   String?
+  createdAt DateTime @default(now())
+
+  @@index([messageId])
+}
+
+model BillingRecord {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type           String
+  amount         Int
+  currency       String   @default("CNY")
+  description    String
+  conversationId String?
+  status         String   @default("completed")
+  createdAt      DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model TokenBlacklist {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([tokenHash])
+  @@index([expiresAt])
+}

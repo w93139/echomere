@@ -1,0 +1,16 @@
+.ripple-distortion {
+  position: relative;
+  isolation: isolate;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: clip;
+  background-color: #070705;
+  user-select: none;
+}
+
+.ripple-distortion > canvas {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  touch-action: pan-x pan-y;
+}

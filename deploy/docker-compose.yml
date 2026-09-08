@@ -1,0 +1,72 @@
+services:
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=file:/data/dev.db
+      - JWT_SECRET=${JWT_SECRET:-}
+      - JWT_SECRET_FILE=${JWT_SECRET_FILE:-}
+      - AUTH_LOGIN_CODES_JSON=${AUTH_LOGIN_CODES_JSON:-}
+      - AUTH_LOGIN_CODES_JSON_FILE=${AUTH_LOGIN_CODES_JSON_FILE:-}
+      - LLM_ENABLED=${LLM_ENABLED:-false}
+      - LLM_API_KEY=${LLM_API_KEY:-}
+      - LLM_API_KEY_FILE=${LLM_API_KEY_FILE:-}
+      - LLM_BASE_URL=${LLM_BASE_URL:-https://api.moonshot.cn/v1}
+      - LLM_ALLOWED_HOSTS=${LLM_ALLOWED_HOSTS:-api.moonshot.cn}
+      - LLM_MODEL=${LLM_MODEL:-moonshot-v1-8k}
+      - LLM_TIMEOUT_MS=${LLM_TIMEOUT_MS:-60000}
+      - LLM_MAX_TOKENS=${LLM_MAX_TOKENS:-1024}
+      - LLM_MAX_OUTPUT_CHARS=${LLM_MAX_OUTPUT_CHARS:-20000}
+      - LLM_DAILY_USER_LIMIT=${LLM_DAILY_USER_LIMIT:-20}
+      - LLM_DAILY_GLOBAL_LIMIT=${LLM_DAILY_GLOBAL_LIMIT:-500}
+      - LLM_MAX_CONCURRENCY=${LLM_MAX_CONCURRENCY:-4}
+      - PORT=3001
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:8080}
+      - TRUST_PROXY=1
+    volumes:
+      - echomere-data:/data
+    networks:
+      - echomere-net
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    environment:
+      - PORT=3000
+      - ECHOMERE_BACKEND_ORIGIN=http://backend:3001
+    networks:
+      - echomere-net
+    depends_on:
+      - backend
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    networks:
+      - echomere-net
+    depends_on:
+      - frontend
+      - backend
+    restart: unless-stopped
+
+volumes:
+  echomere-data:
+
+networks:
+  echomere-net:
+    driver: bridge

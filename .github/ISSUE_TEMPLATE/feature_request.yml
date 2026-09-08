@@ -1,0 +1,28 @@
+name: Feature request
+description: Propose a focused improvement to EchoMere
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: Describe the user need or limitation rather than only the proposed implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Explain the behavior you would like and any alternatives you considered.
+    validations:
+      required: true
+  - type: textarea
+    id: security
+    attributes:
+      label: Security and privacy impact
+      description: Note any new API, credential, personal-data, permission, or network-boundary implications.
+    validations:
+      required: true
+
