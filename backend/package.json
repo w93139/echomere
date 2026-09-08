@@ -21,17 +21,17 @@
     "test": "tsx --test src/lib/*.test.ts"
   },
   "dependencies": {
-    "@prisma/adapter-libsql": "^7.9.1",
-    "@prisma/client": "^7.9.1",
+    "@prisma/adapter-libsql": "^7.10.0",
+    "@prisma/client": "^7.10.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "express-rate-limit": "^8.7.0",
     "helmet": "^8.3.0",
     "jsonwebtoken": "^9.0.2",
     "lunar-javascript": "^1.7.7",
     "taibu-core": "^3.5.0",
-    "zod": "^4.4.3"
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
