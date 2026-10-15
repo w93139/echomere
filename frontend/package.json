@@ -10,7 +10,8 @@
     "build": "vinext build",
     "start": "vinext start",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
-    "test": "node --test lib/*.test.js"
+    "test": "node --test lib/*.test.js",
+    "vendor:glob": "npm pack ./vendor/fast-glob-compat --pack-destination ./vendor --ignore-scripts"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -35,6 +36,7 @@
     "@vitejs/plugin-rsc": "^0.5.38",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.4.1",
+    "fast-glob": "file:./vendor/echomere-fast-glob-compat-1.0.0.tgz",
     "react-server-dom-webpack": "^19.2.9",
     "tailwindcss": "4.2.1",
     "typescript": "5.9.3",
@@ -44,6 +46,7 @@
   },
   "type": "module",
   "overrides": {
+    "fast-glob": "$fast-glob",
     "miniflare": {
       "sharp": "0.35.5",
       "undici": "7.29.1"
